@@ -6,9 +6,14 @@ eureka:
       defaultZone: http://localhost:8090/eureka
   instance:
     hostname: localhost
+
+
+
 spring:
   cloud:
     gateway:
+
+
       discovery:
         locator:
           enable: true
@@ -17,5 +22,4 @@ spring:
           uri: lb://ms-catalogo
           predicates:
             - Path=/categoria/**
-
 
