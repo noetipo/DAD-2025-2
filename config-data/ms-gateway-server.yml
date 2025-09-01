@@ -9,16 +9,25 @@ eureka:
     hostname: localhost
 
 spring:
+  application:
+    name: ms-gateway-server
+
   cloud:
     gateway:
+      # ← OJO: discovery.locator va AQUÍ (no dentro de server.webflux)
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true   # útil con Eureka
+
       server:
         webflux:
-          discovery:
-            locator:
-              enabled: true   # habilita integración con Eureka
-              lower-case-service-id: true  # opcional, útil con Eureka
           routes:
             - id: ms-catalogo
               uri: lb://ms-catalogo
               predicates:
                 - Path=/categoria/**
+              # Si tu servicio real NO tiene el prefijo /categoria,
+              # descomenta para quitar el primer segmento al reenrutar:
+              # filters:
+              #   - StripPrefix=1
