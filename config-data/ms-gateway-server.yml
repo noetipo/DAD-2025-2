@@ -1,5 +1,6 @@
 server:
   port: 9090
+
 eureka:
   client:
     serviceUrl:
@@ -7,19 +8,17 @@ eureka:
   instance:
     hostname: localhost
 
-
-
 spring:
   cloud:
     gateway:
-
-
-      discovery:
-        locator:
-          enable: true
-      routes:
-        - id: ms-catalogo
-          uri: lb://ms-catalogo
-          predicates:
-            - Path=/categoria/**
-
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true   # habilita integración con Eureka
+              lower-case-service-id: true  # opcional, útil con Eureka
+          routes:
+            - id: ms-catalogo
+              uri: lb://ms-catalogo
+              predicates:
+                - Path=/categoria/**
