@@ -1,6 +1,6 @@
 server:
   port: 8081
-pring:
+spring:
   application:
     name: ms-catalogo
 
