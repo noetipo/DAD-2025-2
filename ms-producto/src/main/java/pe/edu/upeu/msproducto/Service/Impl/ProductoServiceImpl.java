@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import pe.edu.upeu.msproducto.Entity.Producto;
 import pe.edu.upeu.msproducto.Respository.ProductoRepository;
 import pe.edu.upeu.msproducto.Service.ProductoService;
+import pe.edu.upeu.msproducto.dto.CatagoriaDto;
+import pe.edu.upeu.msproducto.dto.ProductoDto;
+import pe.edu.upeu.msproducto.feign.CatalogoFeign;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +16,8 @@ import java.util.Optional;
 public class ProductoServiceImpl implements ProductoService {
     @Autowired
     private ProductoRepository productoRepository;
+    @Autowired
+    private CatalogoFeign catalogoFeign;
 
     @Override
     public List<Producto> listar() {
@@ -20,8 +25,15 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
-    public Optional<Producto> buscarPorId(Integer id) {
-        return productoRepository.findById(id);
+    public ProductoDto buscarPorId(Integer id) {
+        Producto producto = productoRepository.findById(id).get();
+        CatagoriaDto catagoriaDto = catalogoFeign.buscarPorId(producto.getIdCategoria());
+        ProductoDto productoDto = new ProductoDto();
+        productoDto.setId(producto.getId());
+        productoDto.setNombre(producto.getNombre());
+        productoDto.setDescripcion(producto.getDescripcion());
+        productoDto.setCatagoria(catagoriaDto);
+        return productoDto;
     }
 
     @Override

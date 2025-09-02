@@ -1,6 +1,7 @@
 package pe.edu.upeu.msproducto.Service;
 
 import pe.edu.upeu.msproducto.Entity.Producto;
+import pe.edu.upeu.msproducto.dto.ProductoDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +9,7 @@ import java.util.Optional;
 public interface ProductoService {
     List<Producto> listar();
 
-    Optional<Producto> buscarPorId(Integer id);
+    ProductoDto buscarPorId(Integer id);
 
     Producto guardar(Producto producto);
 

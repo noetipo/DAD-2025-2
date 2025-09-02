@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upeu.msproducto.Entity.Producto;
 import pe.edu.upeu.msproducto.Service.ProductoService;
+import pe.edu.upeu.msproducto.dto.ProductoDto;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/producto")
@@ -20,7 +20,7 @@ public class ProductoController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Producto> buscarPorId(@PathVariable Integer id) {
+    public ProductoDto buscarPorId(@PathVariable Integer id) {
         return productoService.buscarPorId(id);
     }
 
