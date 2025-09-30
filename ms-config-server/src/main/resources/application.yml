@@ -9,7 +9,7 @@ spring:
         git:
           uri: https://github.com/noetipo/DAD-2025-2.git # ruta del repositorio git
           searchPaths: config-data
-          default-label: main
+          default-label: circuitbreaker
   security:
     user:
       name: root
