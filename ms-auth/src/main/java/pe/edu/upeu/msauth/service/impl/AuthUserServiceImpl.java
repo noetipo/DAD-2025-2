@@ -21,14 +21,18 @@ public class AuthUserServiceImpl implements AuthUserService {
 
     @Override
     public AuthUser save(AuthUserDto authUserDto) {
+        System.out.println(authUserDto);
         Optional<AuthUser> user = authUserRepository.findByUserName(authUserDto.getUserName());
+        System.out.println(user.toString());
         if (user.isPresent())
             return null;
         String password = passwordEncoder.encode(authUserDto.getPassword());
+        System.out.println(password);
         AuthUser authUser = AuthUser.builder()
                 .userName(authUserDto.getUserName())
                 .password(password)
                 .build();
+        System.out.println("authUser.toString(): "+authUser.toString());
         return authUserRepository.save(authUser);
     }
 
