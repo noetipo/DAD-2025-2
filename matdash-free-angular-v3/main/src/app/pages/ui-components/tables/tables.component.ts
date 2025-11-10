@@ -1,11 +1,12 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
-import { MaterialModule } from 'src/app/material.module';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatButtonModule } from '@angular/material/button';
+import {CommonModule} from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {MatCardModule} from '@angular/material/card';
+import {MatTableModule} from '@angular/material/table';
+import {MaterialModule} from 'src/app/material.module';
+import {MatIconModule} from '@angular/material/icon';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatButtonModule} from '@angular/material/button';
+import {CategoryService} from "../../../providers/services/catalog/category.service";
 
 // table 1
 export interface productsData {
@@ -47,6 +48,7 @@ const PRODUCT_DATA: productsData[] = [
   },
 ];
 
+// @ts-ignore
 @Component({
   selector: 'app-tables',
   imports: [
@@ -60,8 +62,22 @@ const PRODUCT_DATA: productsData[] = [
   ],
   templateUrl: './tables.component.html',
 })
-export class AppTablesComponent {
+export class AppTablesComponent implements OnInit {
   // table 1
   displayedColumns1: string[] = ['assigned', 'name', 'priority', 'budget'];
   dataSource1 = PRODUCT_DATA;
+
+  constructor(private categoryService: CategoryService) {
+  }
+
+  ngOnInit(): void {
+    this.getCategories();
+  }
+
+
+  private getCategories(): void {
+    this.categoryService.getAll$().subscribe(data => {
+      console.log(data);
+    });
+  }
 }
