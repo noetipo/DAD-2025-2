@@ -4,10 +4,8 @@ server:
 eureka:
   client:
     serviceUrl:
-      #defaultZone: http://localhost:8090/eureka
       defaultZone: ${EUREKA_URI:http://localhost:8090/eureka}
   instance:
-    #hostname: localhost
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 
 spring:
@@ -16,35 +14,36 @@ spring:
 
   cloud:
     gateway:
-      globals:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+      routes:
+        - id: ms-catalogo
+          uri: lb://ms-catalogo
+          predicates:
+            - Path=/categoria/**
+        - id: ms-producto
+          uri: lb://ms-producto
+          predicates:
+            - Path=/producto/**
+        - id: ms-auth
+          uri: lb://ms-auth
+          predicates:
+            - Path=/auth/**
+
+      # 💡 ESTA es la forma correcta de definir CORS
+      globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins: "http://localhost:4200"
-            allowedHeaders: "*"
+            allowedOrigins:
+              - "http://localhost:4200"
             allowedMethods:
               - GET
               - POST
               - PUT
               - DELETE
-      server:
-        webflux:
-          discovery:
-            locator:
-              enabled: true
-              lower-case-service-id: true
-          routes:
-            - id: ms-catalogo
-              uri: lb://ms-catalogo
-              predicates:
-                - Path=/categoria/**
-            - id: ms-producto
-              uri: lb://ms-producto
-              predicates:
-                - Path=/producto/**
-            - id: ms-auth
-              uri: lb://ms-auth
-              predicates:
-                - Path=/auth/**
-              # Si tu servicio real no expone /categoria/...:
-              # filters:
-              #   - StripPrefix=1
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
